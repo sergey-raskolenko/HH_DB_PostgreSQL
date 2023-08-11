@@ -8,6 +8,8 @@ packages = [{include = "hh_db_postgresql"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+requests = "^2.31.0"
+psycopg2 = "^2.9.7"
 
 
 [build-system]
