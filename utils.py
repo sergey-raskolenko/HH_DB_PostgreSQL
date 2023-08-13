@@ -43,6 +43,7 @@ def create_database(db_name: str, params: dict) -> None:
 		FOREIGN KEY (emp_id) REFERENCES employers(emp_id);
 		""")
 	conn.close()
+	print(f'База данных {db_name} создана.')
 
 
 def get_employer_and_vacancies_info(employer_id: str) -> dict:
@@ -61,7 +62,7 @@ def get_employer_and_vacancies_info(employer_id: str) -> dict:
 
 	response = requests.get(employer_vacancies_url, params=params).json()
 	params['page'] = 0
-	print(f'Получение информации о работодателе {employer_data.get("name")} и его вакансиях..')
+	print(f'Получение информации о работодателе {employer_data.get("name")} и его вакансиях...')
 	while params.get('page') != response.get('pages'):
 		response = requests.get(employer_vacancies_url, params=params).json()
 		vacancy_list.extend(response.get('items'))
@@ -69,13 +70,13 @@ def get_employer_and_vacancies_info(employer_id: str) -> dict:
 	return {'employer': employer_data, 'vacancy_list': vacancy_list}
 
 
-def get_info_from_employers(employer_ids: list) -> list[dict]:
+def get_info_from_employers(employers_dict: dict) -> list[dict]:
 	"""
 	Возвращает информация обо всех интересующих работодателях по их ID из списка
-	:param employer_ids: list, Список ID всех компаний
+	:param employers_dict: list, Список ID всех компаний
 	:return: list[dict]: Список с информацией обо всех компаниях
 	"""
-	return [get_employer_and_vacancies_info(employer_id) for employer_id in employer_ids]
+	return [get_employer_and_vacancies_info(employer) for employer in employers_dict.keys()]
 
 
 def save_data_to_db(db_name: str, data_to_write: list, params: dict) -> None:
@@ -125,7 +126,7 @@ def save_data_to_db(db_name: str, data_to_write: list, params: dict) -> None:
 				)
 
 
-def print_simple_table(data: tuple, cell_sep=' | ') -> None:
+def print_simple_table(data, cell_sep=' | ') -> None:
 	"""
 	Печатает ASCII-таблицу с полученными данными
 	:param data: Tuple[List[str], List[tuple[Any, ...]]], Кортеж со списком названий столбцов и списком информации для
