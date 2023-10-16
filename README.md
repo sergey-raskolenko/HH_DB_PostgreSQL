@@ -28,8 +28,8 @@ vac_url - ссылка на вакансию , published_date - дата пуб�
  ```
 [postgresql]
 host=localhost
-user=postgres
-password=3881125
+user=your_user
+password=your_password
 port=5432
 ```
 3. Создайте poetry venv и установите зависимости при помощи терминала:
